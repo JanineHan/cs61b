@@ -12,17 +12,16 @@ public class ArrayDeque<T> {
     }
 
     // "size" is the new size
-    private void resize(int size) {
-        T[] newa = (T[]) new Object[size];
-        int oldlength = a.length;
+    private void resize(int resize) {
+        T[] newa = (T[]) new Object[resize];
         int copypointer = (nextfirst + 1) % a.length;
-        for (int i = 0; i < a.length; i++) {
+        for (int i = 0; i < size; i++) {
             newa[i] = a[copypointer];
             copypointer = (copypointer + 1) % a.length;
         }
         this.a = newa;
         nextfirst = a.length - 1;
-        nextlast = oldlength;
+        nextlast = size;
     }
 
     public void addFirst(T item) {
