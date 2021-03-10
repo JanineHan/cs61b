@@ -61,7 +61,7 @@ public class ArrayDeque<T> {
         nextfirst = (nextfirst + 1) % a.length;
         size -= 1;
         if (a.length >= 16 && 4 * size < a.length) {
-            resize(size);
+            resize(a.length / 2);
         }
         return first;
     }
@@ -72,7 +72,7 @@ public class ArrayDeque<T> {
         nextlast = (nextlast - 1 + a.length) % a.length;
         size -= 1;
         if (a.length >= 16 && 4 * size < a.length) {
-            resize(size);
+            resize(a.length / 2);
         }
         return last;
     }
