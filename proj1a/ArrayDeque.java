@@ -5,7 +5,7 @@ public class ArrayDeque<T> {
     private int nextlast;
 
     public ArrayDeque() {
-        T[] a = (T[]) new Object[8];
+        a = (T[]) new Object[8];
         size = 0;
         nextfirst = 0;
         nextlast = 1;

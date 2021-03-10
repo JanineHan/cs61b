@@ -51,8 +51,9 @@ public class LinkedListDeque<T> {
         if (size == 0) return null;
         size -= 1;
         T a = sentinel.next.item;
-        sentinel.next = sentinel.next.next;
+
         sentinel.next.next.prev = sentinel;
+        sentinel.next = sentinel.next.next;
         return a;
     }
 
@@ -60,8 +61,9 @@ public class LinkedListDeque<T> {
         if (size == 0) return null;
         size -= 1;
         T a = sentinel.prev.item;
-        sentinel.prev = sentinel.prev.prev;
+
         sentinel.prev.prev.next = sentinel;
+        sentinel.prev = sentinel.prev.prev;
         return a;
     }
 
