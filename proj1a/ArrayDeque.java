@@ -71,8 +71,8 @@ public class ArrayDeque<T> {
         T last = a[(nextlast - 1 + a.length) % a.length];
         nextlast = (nextlast - 1 + a.length) % a.length;
         size -= 1;
-        if (a.length >= 7 && 4 * size < a.length) {
-            resize(a.length / 2);
+        if (a.length >= 16 && 4 * size < a.length) {
+            resize(size + 1);
         }
         return last;
     }
