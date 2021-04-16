@@ -1,16 +1,29 @@
 // TODO: Make sure to make this class a part of the synthesizer package
-// package <package name>;
+package synthesizer;
+
 import java.util.Iterator;
 
 //TODO: Make sure to make this class and all of its methods public
 //TODO: Make sure to make this class extend AbstractBoundedQueue<t>
-public class ArrayRingBuffer<T>  {
+public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;            // index for the next dequeue or peek
     /* Index for the next enqueue. */
     private int last;
     /* Array for storing the buffer data. */
     private T[] rb;
+    private int capacity;
+    private int fillCount;
+
+    @Override
+    public int capacity() {
+        return capacity;
+    }
+
+    @Override
+    public int fillCount() {
+        return fillCount;
+    }
 
     /**
      * Create a new ArrayRingBuffer with the given capacity.
@@ -21,6 +34,11 @@ public class ArrayRingBuffer<T>  {
         //       this.capacity should be set appropriately. Note that the local variable
         //       here shadows the field we inherit from AbstractBoundedQueue, so
         //       you'll need to use this.capacity to set the capacity.
+        this.capacity = capacity;
+        rb = (T[]) new Object[capacity];
+        first = 0;
+        last = 0;
+        fillCount = 0;
     }
 
     /**
@@ -30,6 +48,10 @@ public class ArrayRingBuffer<T>  {
      */
     public void enqueue(T x) {
         // TODO: Enqueue the item. Don't forget to increase fillCount and update last.
+        if (fillCount == capacity) throw new RuntimeException("Ring buffer overflow");
+        rb[last] = x;
+        last = (last + 1) % capacity;
+        fillCount += 1;
     }
 
     /**
@@ -38,7 +60,14 @@ public class ArrayRingBuffer<T>  {
      * covered Monday.
      */
     public T dequeue() {
-        // TODO: Dequeue the first item. Don't forget to decrease fillCount and update 
+        // TODO: Dequeue the first item. Don't forget to decrease fillCount and update
+        if (fillCount == 0) throw new RuntimeException("Ring buffer underflow");
+
+        T a = rb[first];
+
+        first = (first + 1) % capacity;
+        fillCount--;
+        return a;
     }
 
     /**
@@ -46,7 +75,39 @@ public class ArrayRingBuffer<T>  {
      */
     public T peek() {
         // TODO: Return the first item. None of your instance variables should change.
+        if (fillCount == 0) throw new RuntimeException("Ring buffer underflow");
+        return rb[first];
     }
 
     // TODO: When you get to part 5, implement the needed code to support iteration.
+    @Override
+    public Iterator<T> iterator() {
+        return new gsIterator();
+    }
+
+    private class gsIterator implements Iterator<T> {
+        private int pos;
+        private int count;
+
+        public gsIterator() {
+            pos = first;
+            count = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (count == fillCount) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public T next() {
+            T r = rb[pos];
+            pos = (pos + 1) % capacity;
+            count += 1;
+            return r;
+        }
+    }
 }
