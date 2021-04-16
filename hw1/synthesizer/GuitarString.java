@@ -29,7 +29,7 @@ public class GuitarString {
         for (int j = 0; j < buffer.capacity(); j++) {
             buffer.enqueue(Math.random() - 0.5);
         }
-        
+
     }
 
     /* Advance the simulation one time step by performing one iteration of
@@ -39,12 +39,20 @@ public class GuitarString {
         // Dequeue the front sample and enqueue a new sample that is
         //       the average of the two multiplied by the DECAY factor.
         //       Do not call StdAudio.play().
-        buffer.enqueue(DECAY * (buffer.dequeue() + buffer.peek()) / 2);
+        buffer.enqueue(DECAY * 0.5 * (zero(buffer.dequeue()) + zero(buffer.peek())));
     }
 
     /* Return the double at the front of the buffer. */
     public double sample() {
         // Return the correct thing.
-        return buffer.peek();
+        return zero(buffer.peek());
+    }
+
+    private double zero(Double n) {
+        if (n == null) {
+            return 0;
+        }
+        return n;
     }
 }
+
